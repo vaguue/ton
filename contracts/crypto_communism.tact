@@ -38,7 +38,7 @@ fun calculateJettonWalletAddress(
   });
 }
 
-message SendJetton {
+message Withdraw {
   amount: Int as coins;
   queryId: Int as uint64;
   destination: Address;
@@ -46,7 +46,6 @@ message SendJetton {
 
 contract CryptoCommunism with Deployable {
   jettonWalletAddress: Address;
-  jettonAmount: Int as coins = 0;
   admin: Address;
 
   init(jettonWalletCode: Cell, jettonMasterAddress: Address) {
@@ -59,12 +58,7 @@ contract CryptoCommunism with Deployable {
     );
   }
 
-  sendJetton(msg: SendJetton) {
-    require(
-      msg.amount <= self.jettonAmount,
-      "Not enough funds to withdraw"
-    );
-
+  fun sendJetton(msg: Withdraw) {
     send(SendParameters{
       to: self.jettonWalletAddress,
       value: JettonTransferGas,
@@ -76,8 +70,21 @@ contract CryptoCommunism with Deployable {
         customPayload: null,
         forwardTonAmount: 0,
         //beginCell().storeUint(0xF, 4).endCell().beginParse()
-        forwardPayload: rawSlice("F")
+        forwardPayload: rawSlice("F"),
       }.toCell(),
     });
+  }
+
+  receive(msg: Withdraw) {
+    require(sender() == self.admin, "Forbidden");
+    self.sendJetton(msg);
+  }
+
+  get fun balance(): Int {
+    return 0;
+  }
+
+  get fun jettonWalletAddress(): Address {
+    return self.jettonWalletAddress;
   }
 }
