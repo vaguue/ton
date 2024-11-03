@@ -42,18 +42,15 @@ message Withdraw {
   destination: Address;
 }
 
+message WithdrawAll {
+  queryId: Int as uint64;
+  destination: Address;
+}
+
 trait Jetton {
   jettonWalletAddress: Address;
   admin: Address;
-  balance: Int as uint64;
-
-  fun requireOwner() {
-    nativeThrowUnless(132, context().sender == self.owner);
-  }
-
-  get fun owner(): Address {
-    return self.owner;
-  }
+  balance: Int;
 
   fun sendJetton(msg: Withdraw) {
     send(SendParameters{
@@ -71,4 +68,13 @@ trait Jetton {
       }.toCell(),
     });
   }
+
+  get fun balance(): Int {
+    return self.balance;
+  }
+
+  get fun jettonWalletAddress(): Address {
+    return self.jettonWalletAddress;
+  }
+
 }
