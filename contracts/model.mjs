@@ -14,7 +14,7 @@ const shovhal = new Player('shovhal', 1e3);
 
 seva.buy(yes, 100);
 alice.buy(yes, 100);
-seva.sell(yes, seva.shares.yes / 2);
+seva.sell(yes, seva.shares.yes / 1);
 
 bob.buy(no, 10);
 shovhal.buy(no, 10);
@@ -24,21 +24,28 @@ shovhal.sell(no, bob.shares.no);
 
 //YES is the truth
 
+/*
 market.cash = no.cash;
 no.cash = 0;
 
-//market.buy(yes, market.cash);
+market.buy(yes, market.cash);
+*/
 
-const prize = market.cash / yes.bought;
+console.log(yes.cash, no.cash);
+const prize = (yes.cash + no.cash) / yes.bought;
 
 alice.cash += alice.shares.yes * prize;
-console.log(alice.cash);
 seva.cash += seva.shares.yes * prize;
 
+/*
 alice.sell(yes, alice.shares.yes);
 seva.sell(yes, seva.shares.yes);
+*/
 
+alice.debug();
+seva.debug();
 bob.debug();
+shovhal.debug();
 
 console.log('[*] Market:');
 yes.debug();

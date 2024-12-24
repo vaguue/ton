@@ -46,7 +46,9 @@ export class Shares {
 
     const b = (T - R) / 1e15;
     const root = ((PROPORTION * x) / 1e9 + b*b)**0.5;
-    const out = (root - b) * 1e15;
+    let out = (root - b) * 1e15;
+
+    out = Math.sqrt(out);
 
     this.R -= out;
     this.cash += x;
@@ -64,7 +66,9 @@ export class Shares {
     }
 
     const r = (T - R - x) / 1e15;
-    const out = (b * b - r * r) / PROPORTION * 1e9;
+    let out = (b * b - r * r) / PROPORTION * 1e9;
+
+    out = Math.sqrt(out);
 
     this.R += x;
     this.cash -= out;
