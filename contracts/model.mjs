@@ -14,7 +14,7 @@ const shovhal = new Player('shovhal', 1e3);
 
 seva.buy(yes, 100);
 alice.buy(yes, 100);
-seva.sell(yes, seva.shares.yes / 1);
+seva.sell(yes, seva.shares.yes / 2)
 
 bob.buy(no, 10);
 shovhal.buy(no, 10);
@@ -31,8 +31,8 @@ no.cash = 0;
 market.buy(yes, market.cash);
 */
 
-console.log(yes.cash, no.cash);
 const prize = (yes.cash + no.cash) / yes.bought;
+console.log('?', yes.bought);
 
 alice.cash += alice.shares.yes * prize;
 seva.cash += seva.shares.yes * prize;
@@ -45,7 +45,6 @@ seva.sell(yes, seva.shares.yes);
 alice.debug();
 seva.debug();
 bob.debug();
-shovhal.debug();
 
 console.log('[*] Market:');
 yes.debug();

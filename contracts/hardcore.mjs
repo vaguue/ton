@@ -32,11 +32,15 @@ export class Player {
   }
 }
 
+const A = 1e3;
+const S = 0;
+let L = A + A + S;
+
 export class Shares {
   constructor(name) {
     this.name = name;
-    this.R = 1e18;
-    this.T = 1e18;
+    this.R = A;
+    this.T = A;
 
     this.cash = 0;
   }
@@ -44,11 +48,13 @@ export class Shares {
   buy(x) {
     const { T, R } = this;
 
-    const b = (T - R) / 1e15;
-    const root = ((PROPORTION * x) / 1e9 + b*b)**0.5;
-    let out = (root - b) * 1e15;
+    const N = (T - R);
+    const p = (2 + N - L) / 2;
 
-    out = Math.sqrt(out);
+    const out = x / p;
+    console.log({ out, p });
+
+    L = L + x - out;
 
     this.R -= out;
     this.cash += x;
@@ -59,16 +65,13 @@ export class Shares {
   sell(x) {
     const { T, R } = this;
 
-    const b = (T - R) / 1e15;
-    if ((T - R) < x) {
-      x = T - R;
-      //throw new Error('0_o');
-    }
+    const N = (T - R);
+    const p = (L - N) / 2;
 
-    const r = (T - R - x) / 1e15;
-    let out = (b * b - r * r) / PROPORTION * 1e9;
+    const out = x / p;
+    console.log({ out, p });
 
-    out = Math.sqrt(out);
+    L = L - x + out;
 
     this.R += x;
     this.cash -= out;
