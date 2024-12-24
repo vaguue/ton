@@ -33,8 +33,9 @@ export class Player {
 }
 
 const A = 1e3;
-const S = 0;
-let L = A + A + S;
+const S = 1;
+//let L = A + A + S;
+let L = S;
 
 export class Shares {
   constructor(name) {
@@ -54,7 +55,7 @@ export class Shares {
     const out = x / p;
     console.log({ out, p });
 
-    L = L + x - out;
+    L = L + x;
 
     this.R -= out;
     this.cash += x;
@@ -71,7 +72,7 @@ export class Shares {
     const out = x / p;
     console.log({ out, p });
 
-    L = L - x + out;
+    L = L - x;
 
     this.R += x;
     this.cash -= out;
